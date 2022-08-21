@@ -24,5 +24,10 @@ private slots:
     void on_pushButton_ac_clicked();
     void on_pushButton_exec_clicked();
     void math_operations();
+    void on_pushButton_13_clicked();
+    void decrementoper();
+    void triganomentation();
+    void on_pushButton_10_clicked();
+    void on_pushButton_11_clicked();
 };
 #endif // CALCULATE_H
