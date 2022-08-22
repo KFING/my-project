@@ -29,5 +29,7 @@ private slots:
     void triganomentation();
     void on_pushButton_10_clicked();
     void on_pushButton_11_clicked();
+    void on_pushButton_clicked();
+    void on_pushButton_15_clicked();
 };
 #endif // CALCULATE_H

@@ -1,3 +1,7 @@
+#include <QFile>
+#include <QMessageBox>
+#include<QFileDialog>
+#include<QTextEdit>
 #include "calculate.h"
 #include "ui_calculate.h"
 #include "sourcemathoperation.cpp"
@@ -86,11 +90,20 @@ void calculate::on_pushButton_ac_clicked()
 void calculate::on_pushButton_exec_clicked()
 {
     QString str;
-    str = ui->result_show->toPlainText();
-    std::string s = str.toStdString();
+    QString str1;
+    str1 = ui->result_show->toPlainText();
+    std::string s = str1.toStdString();
     OPN strP = s;
     str = QString::fromStdString(strP.Calculate());
     ui->answer->setText(str);
+
+    QFile logFile("C:\\Users\\IT-baby\\Desktop\\calculate\\calculate\\history_calculate.txt");
+    if(logFile.open(QIODevice::Append|QIODevice::Text)){
+        QTextStream outLog(&logFile);
+        outLog<<str1<<'='<<'\n';
+        outLog<<str<<'\n';
+    }
+    logFile.close();
 }
 
 
@@ -166,5 +179,30 @@ void calculate::on_pushButton_11_clicked()
         str = QString::fromStdString(binNum);
         ui->answer->setText(str);
     }
+}
+
+
+void calculate::on_pushButton_clicked()
+{
+    QString fileName = "C:\\Users\\IT-baby\\Desktop\\calculate\\calculate\\history_calculate.txt";
+    if (fileName.isEmpty())
+        return;
+    QFile file(fileName);
+    if (!file.open(QIODevice::ReadOnly | QFile::Text)) {
+        QMessageBox::warning(this, "Warning", "Cannot open file: " + file.errorString());
+        return;
+    }
+    setWindowTitle(fileName);
+    QTextStream in(&file);
+    QString text = in.readAll();
+    ui->result_show->setText(text);
+    file.close();
+}
+
+
+void calculate::on_pushButton_15_clicked()
+{
+    QFile file("C:\\Users\\IT-baby\\Desktop\\calculate\\calculate\\history_calculate.txt");
+    file.resize(0);
 }
 
