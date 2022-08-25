@@ -2,6 +2,7 @@
 #define CALCULATE_H
 
 #include <QMainWindow>
+#include "integralss.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class calculate; }
@@ -17,6 +18,7 @@ public:
 
 private:
     Ui::calculate *ui;
+    integralss *integral_;
 private slots:
     void digits_numbers();
     void on_pushButton_dot_clicked();
@@ -31,5 +33,6 @@ private slots:
     void on_pushButton_11_clicked();
     void on_pushButton_clicked();
     void on_pushButton_15_clicked();
+    void on_pushButton_integrals_clicked();
 };
 #endif // CALCULATE_H

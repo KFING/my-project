@@ -11,18 +11,25 @@ CONFIG += c++17
 SOURCES += \
     DecBin.cpp \
     decHex.cpp \
+    integralss.cpp \
     main.cpp \
     calculate.cpp \
+    resoultintegral.cpp \
     sourcemathoperation.cpp
 
 HEADERS += \
     calculate.h \
+    integralss.h \
     sourcemathoperation.h
 
 FORMS += \
-    calculate.ui
+    calculate.ui \
+    integralss.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    img.qrc

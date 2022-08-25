@@ -2,19 +2,21 @@
 #include <QMessageBox>
 #include<QFileDialog>
 #include<QTextEdit>
+
 #include "calculate.h"
 #include "ui_calculate.h"
 #include "sourcemathoperation.cpp"
 #include "decHex.cpp"
 #include "DecBin.cpp"
 
-int counter = 0;
+int counterC = 0;
 
 calculate::calculate(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::calculate)
 {
     ui->setupUi(this);
+    integral_ = new integralss();
     connect(ui->pushButton_0,SIGNAL(clicked()),this,SLOT(digits_numbers()));
     connect(ui->pushButton_1,SIGNAL(clicked()),this,SLOT(digits_numbers()));
     connect(ui->pushButton_2,SIGNAL(clicked()),this,SLOT(digits_numbers()));
@@ -41,12 +43,9 @@ calculate::calculate(QWidget *parent)
     connect(ui->pushButton_decr,SIGNAL(clicked()),this,SLOT(decrementoper()));
 
     connect(ui->pushButton_11,SIGNAL(clicked()),this,SLOT(on_pushButton_11_clicked()));
+    connect(ui->pushButton_integrals,SIGNAL(clicked()),this,SLOT(on_pushButton_integrals_clicked()));
 
 
-    ui->pushButton_dis->setCheckable(true);
-    ui->pushButton_mul->setCheckable(true);
-    ui->pushButton_min->setCheckable(true);
-    ui->pushButton_plus->setCheckable(true);
 }
 
 calculate::~calculate()
@@ -64,10 +63,10 @@ void calculate::digits_numbers(){
 
 void calculate::on_pushButton_dot_clicked()
 {
-    if(counter == 0){
+    if(counterC == 0){
     ui->result_show->setText( ui->result_show->toPlainText() + '.' );
     }
-    counter = 1;
+    counterC = 1;
 }
 void calculate::operations(){
     QPushButton *button = (QPushButton *)sender();
@@ -78,10 +77,6 @@ void calculate::operations(){
 
 void calculate::on_pushButton_ac_clicked()
 {
-    ui->pushButton_dis->setChecked(false);
-    ui->pushButton_mul->setChecked(false);
-    ui->pushButton_min->setChecked(false);
-    ui->pushButton_plus->setChecked(false);
     ui->result_show->setText("");
 
 }
@@ -93,22 +88,25 @@ void calculate::on_pushButton_exec_clicked()
     QString str1;
     str1 = ui->result_show->toPlainText();
     std::string s = str1.toStdString();
-    OPN strP = s;
-    str = QString::fromStdString(strP.Calculate());
-    ui->answer->setText(str);
-
-    QFile logFile("C:\\Users\\IT-baby\\Desktop\\calculate\\calculate\\history_calculate.txt");
-    if(logFile.open(QIODevice::Append|QIODevice::Text)){
-        QTextStream outLog(&logFile);
-        outLog<<str1<<'='<<'\n';
-        outLog<<str<<'\n';
+    if (s != "")
+    {
+        OPN strP = s;
+        str = QString::fromStdString(strP.Calculate());
+        ui->answer->setText(str);
+        QFile logFile("C:\\Users\\IT-baby\\Desktop\\calculate\\calculate\\history_calculate.txt");
+        if(logFile.open(QIODevice::Append|QIODevice::Text))
+        {
+            QTextStream outLog(&logFile);
+            outLog<<str1<<'='<<'\n';
+            outLog<<str<<'\n';
+        }
+        logFile.close();
     }
-    logFile.close();
 }
 
 
 void calculate::math_operations(){
-    counter = 0;
+    counterC = 0;
     QPushButton *button = (QPushButton *)sender();
     QString new_label;
     new_label = ui->result_show->toPlainText() + button->text();
@@ -205,4 +203,11 @@ void calculate::on_pushButton_15_clicked()
     QFile file("C:\\Users\\IT-baby\\Desktop\\calculate\\calculate\\history_calculate.txt");
     file.resize(0);
 }
+
+
+void calculate::on_pushButton_integrals_clicked()
+{
+    integral_->show();
+}
+
 
