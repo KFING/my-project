@@ -1,7 +1,12 @@
 #include "integralss.h"
 #include "ui_integralss.h"
 #include "sourcemathoperation.cpp"
+
 int counterI = 0;
+
+std::string lettersI = "qweryuipdfghjklzxvbmsincota";
+std::string lettersFunc = "qweryuipdfghjklzvbm";
+
 integralss::integralss(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::integralss)
@@ -53,8 +58,26 @@ void integralss::on_pushButton_calc_clicked()
     std::string apper_limit =  QapperLimit.toStdString();
     std::string lower_limit = QlowerLimit.toStdString();
     std::string accuracy = Qaccuracy.toStdString();
+    int counterErrorI = 0;
     std::string func = Qfunc.toStdString();
+    std::string commonString = apper_limit + lower_limit + accuracy;
 
+
+    for (auto &i:func)
+    {
+        if (lettersFunc.find(i) != std::string::npos)
+        {
+            counterErrorI++;
+        }
+    }
+    for (auto &i:commonString)
+    {
+        if (lettersI.find(i) != std::string::npos)
+        {
+            counterErrorI++;
+        }
+    }
+    if (counterErrorI == 0){
     double dTemp = 0;
     double n = atof(apper_limit.c_str())- atof(lower_limit.c_str());
     double dAccuracy = n * atof(accuracy.c_str());
@@ -72,11 +95,12 @@ void integralss::on_pushButton_calc_clicked()
         temp = strP.Calculate();
         if (temp == "Input error!"){
             break;
-        }else dTemp = dTemp + atof(temp.c_str());
+        }else dTemp = dTemp + atof(temp.c_str())*dAccuracy;
         i = i + dAccuracy;
     }}else dTemp = 0;
     str = std::to_string(dTemp);
-    QresultI = QString::fromStdString(str);
+    QresultI = QString::fromStdString(str);}
+    else QresultI = "Input error!";
     ui->Iresoult->setText(QresultI);
 
 }

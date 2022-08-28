@@ -11,6 +11,7 @@
 
 int counterC = 0;
 
+
 calculate::calculate(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::calculate)
@@ -87,12 +88,23 @@ void calculate::on_pushButton_exec_clicked()
     QString str;
     QString str1;
     str1 = ui->result_show->toPlainText();
+    std::string letters = "qweryuipdfghjklzxvbm";
     std::string s = str1.toStdString();
+    int counterError = 0;
     if (s != "")
     {
+        for (auto &i:s)
+        {
+            if (letters.find(i) != std::string::npos)
+            {
+                counterError = 1;
+            }
+        }
+        if (counterError == 0){
         OPN strP = s;
-        str = QString::fromStdString(strP.Calculate());
-        ui->answer->setText(str);
+        str = QString::fromStdString(strP.Calculate());}
+        else str = "Input error!";
+
         QFile logFile("C:\\Users\\IT-baby\\Desktop\\calculate\\calculate\\history_calculate.txt");
         if(logFile.open(QIODevice::Append|QIODevice::Text))
         {
@@ -101,6 +113,8 @@ void calculate::on_pushButton_exec_clicked()
             outLog<<str<<'\n';
         }
         logFile.close();
+        ui->answer->setText(str);
+
     }
 }
 
